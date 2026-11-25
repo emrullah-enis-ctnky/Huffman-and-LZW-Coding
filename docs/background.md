@@ -2,7 +2,7 @@
 
 Group 8, INF605. This file supports `notebooks/background.ipynb`. It has three parts: the formulas to know by heart, a plan for the background slides, and questions the instructor might ask, with answers.
 
-Sources: Gonzalez & Woods, *Digital Image Processing*, 4th ed., Chapter 8, Section 8.1 (the book); Shannon, "A mathematical theory of communication," *Bell System Technical Journal*, 1948; Huffman, *Proc. IRE*, 1952.
+Sources: Gonzalez & Woods, *Digital Image Processing*, 4th ed., Chapter 8, Section 8.1 (the book); Shannon, "A mathematical theory of communication," *Bell System Technical Journal*, 1948; Huffman, *Proc. IRE*, 1952; Fano, *The transmission of information*, MIT Research Laboratory of Electronics, Technical Report No. 65, 1949; Kraft, MIT thesis, 1949 (the last two are cited in Huffman's paper).
 
 ## 1. Formulas to know
 
@@ -14,7 +14,7 @@ Sources: Gonzalez & Woods, *Digital Image Processing*, 4th ed., Chapter 8, Secti
 | Entropy | $H = -\sum_j P_j \log_2 P_j$ | average surprise per symbol |
 | Average code length | $L_{avg} = \sum_k P_k\, l_k$ | code-word lengths weighted by probability |
 | Kraft inequality | $\sum_k 2^{-l_k} \le 1$ | a prefix-free code with these lengths exists |
-| Shannon's first theorem | $H \le L_{avg} < H + 1$ | best one-word-per-symbol code, within one bit of $H$ |
+| Consequence of Shannon's first theorem | $H \le L_{avg} < H + 1$ | best one-word-per-symbol code, within one bit of $H$ |
 | Blocks of $n$ symbols | $L_n / n < H + 1/n$ | gets closer to $H$, at the price of $2^{8n}$ words for pixels |
 
 Reproduced from the book (notebook, Section 1): Example 8.1 gives $L_{avg} = 1.81$, $C = 4.42$, $R = 0.774$. The book prints $H = 1.6614$ in Example 8.2; with the rounded probabilities of its Table 8.1 we get $1.6637$.
@@ -71,7 +71,7 @@ For 256 gray values, blocks of 2 pixels need $256^2 = 65{,}536$ code words and b
 Neighbouring pixels are similar but rarely identical, so almost every pixel starts a new run. Each run costs 16 bits (value plus length) for a single pixel, which is twice the original 8 bits.
 
 **Why is Shannon–Fano not optimal, and why is Huffman?**
-Shannon–Fano decides each split by balancing probabilities in the current group, without looking ahead. Huffman builds from the bottom: the two least probable symbols can always be given the longest, equal-length words and made siblings. Merging them gives a smaller problem with one symbol fewer, which is solved the same way, so the final code is optimal.
+Huffman's own introduction says the Shannon and Fano procedures are not optimum and only approach the optimum as the number of messages grows. Shannon–Fano decides each split by balancing probabilities in the current group, without looking ahead. Huffman builds from the bottom: the two least probable symbols can always be given the longest, equal-length words and made siblings. Merging them gives a smaller problem with one symbol fewer, which is solved the same way, so the final code is optimal.
 
 **Which part of the pipeline is lossy?**
 The quantizer. The book's model is mapper, then quantizer, then symbol coder. Our methods are lossless, so there is no quantizer and the decoded image is identical to the original.
@@ -81,4 +81,4 @@ Data are the bits we store. Information is the content they carry. The same info
 
 ## 4. Open points
 - The book's printed $H = 1.6614$ (Example 8.2) differs slightly from our $1.6637$ for the rounded probabilities in its table.
-- Check the reference for Shannon–Fano (Fano 1949) before it goes on a slide.
+- The Shannon–Fano reference is checked: R. M. Fano, *The transmission of information*, MIT Research Laboratory of Electronics, Technical Report No. 65, March 1949. Huffman's paper cites it too.
